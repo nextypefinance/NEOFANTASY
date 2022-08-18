@@ -122,7 +122,7 @@ contract Trusteeship is Ownable, ReentrancyGuard {
         require(_propertyId > 0, "NONEMPTY_PROPERTY_ID");
         require(_orderID > 0, "NONEMPTY_ORDER_ID");
         require(checkOrderIdIsExist(_orderID) == false, "ORDER_ID_IS_EXISTED");
-        require(nftList[_toAddress][_nftToken].isTrust == false, "NFT_ALREADY_RECEIVED");
+        nftList[_toAddress][_nftToken].isTrust = false;
 
         orderList[_orderID] = block.timestamp;
         nftList[_toAddress][_nftToken].propertyIdList.push(_propertyId);
@@ -134,7 +134,7 @@ contract Trusteeship is Ownable, ReentrancyGuard {
         require(_nftToken != address(0), "NONEMPTY_NFT_ADDRESS");
         require(_orderID > 0, "NONEMPTY_ORDER_ID");
         require(checkOrderIdIsExist(_orderID) == false, "ORDER_ID_IS_EXISTED");
-        require(nftList[_toAddress][_nftToken].isTrust == false, "NFT_ALREADY_RECEIVED");
+        nftList[_toAddress][_nftToken].isTrust = false;
 
         orderList[_orderID] = block.timestamp;
         uint256 len = _propertyIdList.length;
@@ -166,6 +166,7 @@ contract Trusteeship is Ownable, ReentrancyGuard {
         uint256 len = _propertyIdList.length;
         require(len > 0, "NO_NFT_TO_CLAIM");
         nftList[msg.sender][_nftToken].isTrust = true;
+        nftList[msg.sender][_nftToken].propertyIdList = new uint256[](0);
 
         if (mintFeeAmount > 0 && feeTo != address(0)) {
             uint256 feeAmountTotal = mintFeeAmount.mul(len);
