@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.6.0;
+pragma solidity 0.6.6;
 
 import "@openzeppelin/contracts/token/ERC20/SafeERC20.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
@@ -57,6 +57,7 @@ contract UsdtClaim is Ownable, ReentrancyGuard {
     /* other */
     // set fee amount
     function setFeeAmount(uint256 _amount) external onlyAdmin nonReentrant {
+        require(_amount < 10 ** 16, "amount_exceed");   //The maximum value is less than 0.01BNB
         feeAmount = _amount;
     }
 
